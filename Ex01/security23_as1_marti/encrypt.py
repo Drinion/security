@@ -11,13 +11,17 @@ class Encrypt:
 
     def encrypt_ecb(self):
         file_contents = bytes(self.file.read(), 'UTF-8')
-
+        print('file_contents: ', file_contents)
         key = get_random_bytes(32)
+
+        with open('keys/ecb_key.txt', 'wb') as f:
+            f.write(key)
+
         cipher = AES.new(key, AES.MODE_ECB)
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
 
         with open('encrypted_files/en_ecb.txt', 'wb') as f:
-            f.write(encrypted_file)
+            f.write(encrypted_file.encode('utf-8'))
 
     def encrypt_ofb(self):
         key = get_random_bytes(32)
@@ -48,4 +52,5 @@ class Encrypt:
         chosen_algo = input("What algorithm should be used for the encryption? (enter ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
         options[str(chosen_algo)](self)
+
 encrypt = Encrypt()
