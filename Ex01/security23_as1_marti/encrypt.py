@@ -8,9 +8,10 @@ class Encrypt:
         self.choose_encryption_algo()
 
     def encrypt_ecb(self):
-    key = get_random_bytes(32)
+        key = get_random_bytes(32)
         cipher = cc.AES.new(key, MODE_ECB)
         encrypted_file = cipher.encrypt(pad(self.file, 32))
+
         with open('encrypted_files/en_ecb.txt', 'w') as f:
             f.write(encrypted_file)
 
@@ -18,6 +19,7 @@ class Encrypt:
         key = get_random_bytes(32)
         cipher = cc.AES.new(key, MODE_OFB)
         encrypted_file = cipher.encrypt(pad(self.file, 32))
+
         with open('encrypted_files/en_ofb.txt', 'w') as f:
             f.write(encrypted_file)
 
