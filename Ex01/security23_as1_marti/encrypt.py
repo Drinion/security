@@ -3,8 +3,9 @@ from Crypto.Random import get_random_bytes
 
 class Encrypt:
 
-    def __init__(self):
-        self.file = "blablabla"
+    def start(self, file):
+        self.file = file
+        print("Reached encrypt!")
         self.choose_encryption_algo()
 
     def encrypt_ecb(self):

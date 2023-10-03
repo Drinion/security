@@ -3,7 +3,7 @@ from Crypto.Random import get_random_bytes
 
 class Decrypt:
 
-    def __init__(self):
+    def start(self):
         self.file = file
         self.choose_decryption_algo()
 
