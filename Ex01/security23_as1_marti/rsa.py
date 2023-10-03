@@ -3,8 +3,15 @@ from Crypto.Cipher import AES
 
 class RSA:
 
-    def __init__(self):
-        self.generate_keys()
+    def __init__(self, file):
+        self.file = file
+        self.encrypt()
+
+    def encrypt(self.file):
+        e, N = generate_keys()
+        encrypted_file, sym_key = encrypt_file_with_aes_gcm(self.file)
+        encrypted_sym_key = encrypt_symmetric_key(sym_key,e,N)
+        append(encrypted_file, encrypted_sym_key)
 
     def generate_e(int N):
         found = false
@@ -39,6 +46,8 @@ class RSA:
         with open('keys/private_key.txt', 'w') as f:
             f.write("d:" +  d + "\n" + "N:" + N)
 
+        return e, N
+
     def isPrime(n):
         for i in len(int(n/2)):
             if n % i == 0:
@@ -51,29 +60,20 @@ class RSA:
 
         return [i for i in range(lbound,ubound) if isPrime(i)]
 
-    def symmetric_aes_gcm():
-        key = get_random_bytes(32)
-        """
-        Generate aead keypairs.
-        """
-
     def encrypt_file_with_aes_gcm(self):
         key = get_random_bytes(32)
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-        encrypted_file = cipher.encrypt
-        """
-        Encrypt file with AEAD.
-        """
+        encrypted_file = cipher.encrypt(pad(self.file, 32))
+        
+        return encrypted_file, key
 
     def encrypt_sym_key(int aes_gcm_key, int e, int N):
         sym_key_encrypted = (aead_key^e) % N
 
         return sym_key_encrypted
-        """
-        Encrypt the symmetric aead key with RSA.
-        """
 
     def append(file, key):
-        """
-        Append key to body of file. Save it as well.
-        """
+        with open('files/aead_encrypted.txt', 'w') as f:
+            f.write(file.open() + key)
+
+        print("Encrypted file stored as 'files/aead_encrypted.txt'")
