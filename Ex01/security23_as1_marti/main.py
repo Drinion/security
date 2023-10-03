@@ -30,4 +30,3 @@ class Main:
 
 main = Main()
 main.start
-
