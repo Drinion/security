@@ -2,6 +2,7 @@
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
+import rsa
 
 class Encrypt:
 
@@ -40,11 +41,11 @@ class Encrypt:
             f.write(encrypted_file)
 
     def encrypt_rsa(self):
-        RSA.generate_keypairs()
-        sym_aead_key = RSA.symmetric_aead()
-        encrypted_file = RSA.encrypt_file_with_aead(self.file)
-        enc_sym_key = RSA.encrypt_sym_key("public_key.bin")
-        RSA.append(encrypted_file, enc_sym_key)
+        rsa.RSA(self.file).encrypt()
+        #  sym_aead_key = rsa.symmetric_aead()
+        #  encrypted_file = rsa.encrypt_file_with_aead(self.file)
+        #  enc_sym_key = rsa.encrypt_sym_key("public_key.bin")
+        #  rsa.append(encrypted_file, enc_sym_key)
 
     """
     TODO: options shouldn't be global. Change it.
@@ -60,5 +61,3 @@ class Encrypt:
         chosen_algo = input("What algorithm should be used for the encryption? (enter ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
         options[str(chosen_algo)](self)
-
-encrypt = Encrypt()
