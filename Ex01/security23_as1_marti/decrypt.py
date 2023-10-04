@@ -10,27 +10,30 @@ class Decrypt:
         self.choose_decryption_algo()
 
     def decrypt_ecb(self):
-        print('file_contents:', self.file.read())
         file_contents = self.file.read()
 
-        with open('keys/ecb_key.txt', 'rb') as f:
+        with open('keys/ecb_key.bin', 'rb') as f:
             ecb_key = f.read()
 
         cipher = AES.new(ecb_key, AES.MODE_ECB)
-        print('decrypted: ', cipher.decrypt(file_contents))
         decrypted_text = unpad(cipher.decrypt(file_contents), 32)
 
-        with open('decrypted_files/de_ecb.txt', 'wb') as f:
+        with open('decrypted_files/de_ecb.bin', 'wb') as f:
             f.write(decrypted_text)
 
     def decrypt_ofb(self):
-        ofb_key = Encryption.get(ofb_key)
-        cipher = AES.new(key, AES.MODE_OFB)
+        file_contents = self.file.read()
 
-        decrypted_file = (cipher.decrypt(self.file, 32))
+        with open('keys/ofb_key.bin', 'rb') as f:
+            ofb_key = f.read()
+        with open('keys/ofb_iv.bin', 'rb') as f:
+            iv = f.read()
 
-        with open('decrypted_files/de_ofb.txt', 'w') as f:
-            f.write(decrypted_file)
+        cipher = AES.new(ofb_key, AES.MODE_OFB, iv=iv)
+        decrypted_text = unpad(cipher.decrypt(file_contents), 32)
+
+        with open('decrypted_files/de_ofb.bin', 'wb') as f:
+            f.write(decrypted_text)
 
     global options
     options = {

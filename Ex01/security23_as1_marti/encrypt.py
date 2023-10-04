@@ -1,7 +1,7 @@
 #  import Crypto.Cipher as cc
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-from Crypto.Util.Padding import pad
+from Crypto.Util.Padding import pad, unpad
 
 class Encrypt:
 
@@ -10,32 +10,40 @@ class Encrypt:
         self.choose_encryption_algo()
 
     def encrypt_ecb(self):
-        file_contents = bytes(self.file.read(), 'UTF-8')
-        print('file_contents: ', file_contents)
+        file_contents = bytes(self.file.read())
         key = get_random_bytes(32)
 
-        with open('keys/ecb_key.txt', 'wb') as f:
+        with open('keys/ecb_key.bin', 'wb') as f:
             f.write(key)
 
         cipher = AES.new(key, AES.MODE_ECB)
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
 
-        with open('encrypted_files/en_ecb.txt', 'wb') as f:
-            f.write(encrypted_file.encode('utf-8'))
+        with open('encrypted_files/en_ecb.bin', 'wb') as f:
+            f.write(encrypted_file)
 
     def encrypt_ofb(self):
+        file_contents = bytes(self.file.read())
         key = get_random_bytes(32)
-        cipher = AES.new(key, AES.MODE_OFB)
-        encrypted_file = cipher.encrypt(self.file)
 
-        with open('encrypted_files/en_ofb.txt', 'w') as f:
+        with open('keys/ofb_key.bin', 'wb') as f:
+            f.write(key)
+
+        cipher = AES.new(key, AES.MODE_OFB)
+
+        with open('keys/ofb_iv.bin', 'wb') as f:
+            f.write(cipher.iv)
+
+        encrypted_file = cipher.encrypt(pad(file_contents, 32))
+
+        with open('encrypted_files/en_ofb.bin', 'wb') as f:
             f.write(encrypted_file)
 
     def encrypt_rsa(self):
         RSA.generate_keypairs()
         sym_aead_key = RSA.symmetric_aead()
         encrypted_file = RSA.encrypt_file_with_aead(self.file)
-        enc_sym_key = RSA.encrypt_sym_key("public_key.txt")
+        enc_sym_key = RSA.encrypt_sym_key("public_key.bin")
         RSA.append(encrypted_file, enc_sym_key)
 
     """
