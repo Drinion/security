@@ -2,6 +2,7 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import unpad, pad
 import encrypt
+import rsa
 
 class Decrypt:
 
@@ -35,10 +36,14 @@ class Decrypt:
         with open('decrypted_files/de_ofb.bin', 'wb') as f:
             f.write(decrypted_text)
 
+    def decrypt_rsa(self):
+        rsa.RSA(self.file).decrypt()
+
     global options
     options = {
             'ECB': decrypt_ecb,
-            'OFB': decrypt_ofb
+            'OFB': decrypt_ofb,
+            'RSA': decrypt_rsa
             }
 
     def choose_decryption_algo(self):
