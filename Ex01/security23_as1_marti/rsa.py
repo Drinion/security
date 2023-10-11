@@ -104,7 +104,7 @@ class RSA:
 
     def save_decrypted_file(self, file):
         text_first = str(file).split('\\n')[0]
-        text_second = text_first.split("'")[1]
+        text_second = text_first.split("\"")[1]
         with open('decrypted_files/aead_decrypted.bin', 'w') as f:
             f.write(text_second)
 

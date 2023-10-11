@@ -52,12 +52,12 @@ class Encrypt:
     """
     global options
     options = {
-            'ECB': encrypt_ecb,
-            'OFB': encrypt_ofb,
-            'RSA': encrypt_rsa
+            'ecb': encrypt_ecb,
+            'ofb': encrypt_ofb,
+            'rsa': encrypt_rsa
             }
 
     def choose_encryption_algo(self):
         chosen_algo = input("What algorithm should be used for the encryption? (enter ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
-        options[str(chosen_algo)](self)
+        options[str(chosen_algo.lower())](self)

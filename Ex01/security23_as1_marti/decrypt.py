@@ -41,12 +41,12 @@ class Decrypt:
 
     global options
     options = {
-            'ECB': decrypt_ecb,
-            'OFB': decrypt_ofb,
-            'RSA': decrypt_rsa
+            'ecb': decrypt_ecb,
+            'ofb': decrypt_ofb,
+            'rsa': decrypt_rsa
             }
 
     def choose_decryption_algo(self):
         chosen_algo = input("What algorithm should be used for the decryption? (enter ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
-        options[str(chosen_algo)](self)
+        options[str(chosen_algo.lower())](self)
