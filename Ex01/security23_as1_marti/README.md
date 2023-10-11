@@ -1,6 +1,6 @@
 # Edencrypt
 This program can be used to encrypt and decrypt text files using three different cryptological algorithms, namely RSA, ECB and ONF.
-## Installation
+## Installation and Launch
 Move to your desired location and clone this repository using
 ```
 git clone git@github.com:Drinion/security.git
