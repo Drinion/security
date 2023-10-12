@@ -8,8 +8,9 @@ from Crypto.Random import get_random_bytes
 
 class RSA:
 
-    def __init__(self, file):
+    def __init__(self, file, file_path):
         self.file = file
+        self.file_path = file_path
 
     def generate_e(self, n):
         while (True):
@@ -63,7 +64,8 @@ class RSA:
         key = (3).to_bytes(16, 'little')
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
-        encrypted_file = cipher.encrypt(pad(self.file.read(), 16), output=None)
+        encrypted_file = cipher.encrypt(self.file.read(), output=None)
+        #  encrypted_file = cipher.encrypt(pad(self.file.read(), 16), output=None)
 
         with open("keys/gcm_nonce.bin", "wb") as f:
             f.write(nonce)
@@ -77,11 +79,12 @@ class RSA:
         return sym_key_encrypted
 
     def append(self, file, key):
-        with open('files/aead_encrypted.json', 'w') as f:
+        file_name = self.file_path.split("/")[-1].split(".")[0]
+        with open('files/' + file_name + '_encrypted.json', 'w') as f:
             dictionary = { "file": int.from_bytes(file, 'little'), "key": key }
             json.dump(dictionary, f)
 
-        print("Encrypted file stored as 'files/aead_encrypted.json'")
+        print("Encrypted file stored as 'files/"+ file_name + "_encrypted.json'")
 
     def extract_sym_key(self, file):
         json_file = json.load(file)
@@ -103,9 +106,10 @@ class RSA:
         return decrypted_file
 
     def save_decrypted_file(self, file):
+        file_name = self.file_path.split("/")[-1].split(".")[0]
         text_first = str(file).split('\\n')[0]
         text_second = text_first.split("\"")[1]
-        with open('decrypted_files/aead_decrypted.bin', 'w') as f:
+        with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:
             f.write(text_second)
 
     def encrypt(self):

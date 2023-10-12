@@ -6,8 +6,11 @@ import rsa
 
 class Decrypt:
 
-    def start(self, file):
+    def __init__(self, file, file_path):
         self.file = file
+        self.file_path = file_path
+
+    def start(self):
         self.choose_decryption_algo()
 
     def decrypt_ecb(self):
@@ -36,8 +39,8 @@ class Decrypt:
         with open('decrypted_files/de_ofb.bin', 'wb') as f:
             f.write(decrypted_text)
 
-    def decrypt_rsa(self):
-        rsa.RSA(self.file).decrypt()
+    def decrypt_rsa(self, file_path):
+        rsa.RSA(self.file, file_path).decrypt()
 
     global options
     options = {

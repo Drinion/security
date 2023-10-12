@@ -7,16 +7,16 @@ class Main:
         self.start()
 
     def start(self):
-        file_path = input("Hey! Before we start, please give me a file to either en- or decrypt (enter filepath): ")
+        file_path = input("Hey! Please give me a file (enter filepath): ")
         global file
         file = open(file_path, 'rb')
         self.choose_encryption_or_decryption()
 
     def encrypt(self):
-        encrypt.Encrypt().start(file)
+        encrypt.Encrypt(file, file_path).start()
 
     def decrypt(self):
-        decrypt.Decrypt().start(file)
+        decrypt.Decrypt(file, file_path).start()
 
     global options
     options = {
