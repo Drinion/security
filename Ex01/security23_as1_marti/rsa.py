@@ -1,8 +1,5 @@
-import random
-import math
-import json
+import random, math, json
 from struct import pack
-from Crypto.Util.Padding import pad, unpad
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
@@ -15,11 +12,10 @@ class RSA:
     def generate_e(self, n):
         while (True):
             e = random.randrange(2, n)
-
             if (math.gcd(e, n) == 1):
                 return e
 
-    def generate_d(self, e, n):
+    def generate_gcd(self, e, n):
         x, old_x = 0, 1
         y, old_y = 1, 0
 
@@ -31,26 +27,34 @@ class RSA:
 
         return e, old_x, old_y
 
+    def save_public_key(self, e, N):
+        with open('keys/public_key.bin', 'w') as f:
+            dictionary = { "e": e, "N": N }
+            json.dump(dictionary, f)
+
+    def save_private_key(self, d, N):
+        with open('keys/private_key.bin', 'w') as f:
+            dictionary = { "d": d, "N": N }
+            json.dump(dictionary, f)
+
+    def compute_d(self, x, phi_N):
+        if (x < 0):
+            d = x + phi_N
+        else:
+            d = x
+        return d
+
+
     def generate_keys(self):
         p = 23
         q = 91
         N = p*q
         phi_N = (p-1)*(q-1)
         e = self.generate_e(phi_N)
-        gcd, x, y = self.generate_d(e, phi_N)
-
-        if (x < 0):
-            d = x + phi_N
-        else:
-            d = x
-
-        with open('keys/public_key.bin', 'w') as f:
-            dictionary = { "e": e, "N": N }
-            json.dump(dictionary, f)
-
-        with open('keys/private_key.bin', 'w') as f:
-            dictionary = { "d": d, "N": N }
-            json.dump(dictionary, f)
+        gcd, x, y = self.generate_gcd(e, phi_N)
+        d = self.compute_d(x, phi_N)
+        self.save_public_key(e, N)
+        self.save_private_key(d, N)
 
         return e, N
 
@@ -65,11 +69,9 @@ class RSA:
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
         encrypted_file = cipher.encrypt(self.file.read(), output=None)
-        #  encrypted_file = cipher.encrypt(pad(self.file.read(), 16), output=None)
 
         with open("keys/gcm_nonce.bin", "wb") as f:
             f.write(nonce)
-
 
         return encrypted_file, key
 
@@ -99,7 +101,6 @@ class RSA:
     def decrypt_file_with_aes_gcm(self, key, file):
         with open("keys/gcm_nonce.bin", "rb") as f:
             nonce = f.read()
-
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         decrypted_file = cipher.decrypt(file.to_bytes(file.bit_length(), 'little'), output=None)
 
@@ -107,10 +108,10 @@ class RSA:
 
     def save_decrypted_file(self, file):
         file_name = self.file_path.split("/")[-1].split(".")[0]
-        text_first = str(file).split('\\n')[0]
-        text_second = text_first.split("\"")[1]
+        text_first = str(file).split('#')[0].split("b\'")[1]
+
         with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:
-            f.write(text_second)
+            f.write(text_first + '#')
 
     def encrypt(self):
         e, N = self.generate_keys()

@@ -21,6 +21,10 @@ def test_decrypted_message_equals_encrypted_message():
     encrypted_file = open('files/test_file_encrypted.json', 'rb')
     rsa_decrypt = decrypt.Decrypt(encrypted_file, 'files/test_file_encrypted.json')
     rsa_decrypt.decrypt_rsa('files/test_file_encrypted.json')
-    decrypted_file = open('decrypted_files/test_file_decrypted.bin', 'rb')
+    decrypted_file = open('decrypted_files/test_file_encrypted_decrypted.bin', 'rb')
+    with open('files/test_file.txt', 'r') as f:
+        message = f.read()
+    with open('decrypted_files/test_file_encrypted_decrypted.bin', 'rb') as f:
+        decrypted_message = f.read().decode('ascii')
 
-    assert  decrypted_file == test_file
+    assert  decrypted_message == message.split('\n')[0]
