@@ -44,7 +44,6 @@ class RSA:
             d = x
         return d
 
-
     def generate_keys(self):
         p = 23
         q = 91
@@ -69,10 +68,13 @@ class RSA:
         key = (3).to_bytes(16, 'little')
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
-        encrypted_file = cipher.encrypt(self.file.read(), output=None)
+        encrypted_file, tag = cipher.encrypt_and_digest(self.file.read(), output=None)
 
         with open("keys/gcm_nonce.bin", "wb") as f:
             f.write(nonce)
+
+        with open("keys/gcm_tag.bin", "wb") as f:
+            f.write(tag)
 
         return encrypted_file, key
 
@@ -83,16 +85,30 @@ class RSA:
 
     def append(self, file, key):
         file_name = self.file_path.split("/")[-1].split(".")[0]
-        with open('files/' + file_name + '_encrypted.json', 'w') as f:
-            dictionary = { "file": int.from_bytes(file, 'little'), "key": key }
-            json.dump(dictionary, f)
+        key_array = key.to_bytes(16, 'little')
+        file_array = bytearray(file)
+        key_file = bytearray(key_array) + file_array
+        with open('files/' + file_name + '_encrypted.bin', 'wb') as f:
+            f.write(bytes(key_file))
+        #  with open('files/' + file_name + '_encrypted.json', 'w') as f:
+            #  dictionary = { "file": int.from_bytes(file, 'little'), "key": key }
+            #  json.dump(dictionary, f)
 
-        print("Encrypted file stored as 'files/"+ file_name + "_encrypted.json'")
+        print("Encrypted file stored as 'files/"+ file_name + "_encrypted.bin'")
 
     def extract_sym_key(self, file):
-        json_file = json.load(file)
-
-        return json_file['key'], json_file['file']
+        content = file.read()
+        key_bytes = content[:16]
+        key = int.from_bytes(key_bytes, 'little')
+        message = content[16:]
+        print("extracted key", key)
+        print("extracted message", message)
+        #  key = bytearray(file)
+        #  content = file[17:]
+        #  json_file = json.load(file)
+        #
+        #  return json_file['key'], json_file['file']
+        return key, message
 
     def decrypt_sym_key(self, c, d, N):
         decrypted_key = pow(c, d) % N
@@ -103,8 +119,11 @@ class RSA:
         with open("keys/gcm_nonce.bin", "rb") as f:
             nonce = f.read()
 
+        with open("keys/gcm_tag.bin", "rb") as f:
+            tag = f.read()
+
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-        decrypted_file = cipher.decrypt(file.to_bytes(file.bit_length(), 'little'))
+        decrypted_file = cipher.decrypt_and_verify(file, tag)
 
         return decrypted_file
 
