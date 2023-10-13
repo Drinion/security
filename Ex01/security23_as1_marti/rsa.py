@@ -65,6 +65,7 @@ class RSA:
         return json_file['d'], json_file['N']
 
     def encrypt_file_with_aes_gcm(self):
+        header = b"header"
         key = (3).to_bytes(16, 'little')
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
@@ -101,8 +102,9 @@ class RSA:
     def decrypt_file_with_aes_gcm(self, key, file):
         with open("keys/gcm_nonce.bin", "rb") as f:
             nonce = f.read()
+
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-        decrypted_file = cipher.decrypt(file.to_bytes(file.bit_length(), 'little'), output=None)
+        decrypted_file = cipher.decrypt(file.to_bytes(file.bit_length(), 'little'))
 
         return decrypted_file
 
