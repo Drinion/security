@@ -90,9 +90,6 @@ class RSA:
         key_file = bytearray(key_array) + file_array
         with open('files/' + file_name + '_encrypted.bin', 'wb') as f:
             f.write(bytes(key_file))
-        #  with open('files/' + file_name + '_encrypted.json', 'w') as f:
-            #  dictionary = { "file": int.from_bytes(file, 'little'), "key": key }
-            #  json.dump(dictionary, f)
 
         print("Encrypted file stored as 'files/"+ file_name + "_encrypted.bin'")
 
@@ -101,13 +98,7 @@ class RSA:
         key_bytes = content[:16]
         key = int.from_bytes(key_bytes, 'little')
         message = content[16:]
-        print("extracted key", key)
-        print("extracted message", message)
-        #  key = bytearray(file)
-        #  content = file[17:]
-        #  json_file = json.load(file)
-        #
-        #  return json_file['key'], json_file['file']
+
         return key, message
 
     def decrypt_sym_key(self, c, d, N):
@@ -129,10 +120,10 @@ class RSA:
 
     def save_decrypted_file(self, file):
         file_name = self.file_path.split("/")[-1].split(".")[0]
-        text_first = str(file).split('#')[0].split("b\'")[1]
+        text = str(file).split('\\n')[0].split("b\'")[1]
 
         with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:
-            f.write(text_first + '#')
+            f.write(text)
 
     def encrypt(self):
         e, N = self.generate_keys()
