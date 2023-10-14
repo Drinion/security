@@ -9,7 +9,7 @@ Move into the root folder
 ```
 /Ex01/security23_as_marti1
 ```
-install dependencies
+install the dependencies
 ```
 bash install.sh
 ```
@@ -17,7 +17,7 @@ and execute the program by typing
 ```
 python3 main.py
 ```
-Follow the CL-Dialog and if necessary, install the missing dependencies prompted by the error messages.
+Now simply follow the CL-Dialog.
 ## Testing
 There are currently two tests that test the basic functionality of the RSA encryption flow. You can run the tests using
 ```
