@@ -1,8 +1,8 @@
 import encrypt
 import decrypt
 
-class Main:
 
+class Main:
     def __init__(self):
         self.start()
 

@@ -4,6 +4,7 @@ from Crypto.Util.Padding import unpad, pad
 import encrypt
 import rsa
 
+
 class Decrypt:
 
     def __init__(self, file, file_path):
@@ -50,6 +51,6 @@ class Decrypt:
             }
 
     def choose_decryption_algo(self):
-        chosen_algo = input("What algorithm should be used for the decryption? (enter ECB, OFB or RSA):")
+        chosen_algo = input("Choose decryption algorithm (ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
         options[str(chosen_algo.lower())](self)

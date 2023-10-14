@@ -4,6 +4,7 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 import rsa
 
+
 class Encrypt:
 
     def __init__(self, file, file_path):
@@ -57,6 +58,6 @@ class Encrypt:
             }
 
     def choose_encryption_algo(self):
-        chosen_algo = input("What algorithm should be used for the encryption? (enter ECB, OFB or RSA):")
+        chosen_algo = input("Choose encryption algorithm (ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
         options[str(chosen_algo.lower())](self)
