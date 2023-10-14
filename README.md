@@ -1,2 +1,2 @@
 # Lecture on Security
-This repository aims to organize my ever increasing amount of files who are related to the lecture 'Security'.
+This repository aims to be a general storage for all files related to the lecture 'Security'.
