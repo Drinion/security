@@ -1,10 +1,6 @@
 # Hush
 This program can be used to encrypt and decrypt text files using three different cryptological algorithms, namely RSA, ECB and ONF.
 ## Installation and Launch
-Install dependencies
-```
-bash install.sh
-```
 Move to your desired location and clone this repository using
 ```
 git clone git@github.com:Drinion/security.git
@@ -12,6 +8,10 @@ git clone git@github.com:Drinion/security.git
 Move into the root folder
 ```
 /Ex01/security23_as_marti1
+```
+install dependencies
+```
+bash install.sh
 ```
 and execute the program by typing
 ```
