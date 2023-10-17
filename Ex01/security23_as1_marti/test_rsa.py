@@ -1,3 +1,4 @@
+import os
 import pytest
 import rsa
 import encrypt
@@ -20,13 +21,13 @@ def test_decrypted_message_equals_encrypted_message():
     test_file = open('files/test_file.txt', 'rb')
     rsa_encrypt = encrypt.Encrypt(test_file, 'files/test_file.txt')
     rsa_encrypt.encrypt_rsa('files/test_file.txt')
-    encrypted_file = open('files/test_file_encrypted.bin', 'rb')
-    rsa_decrypt = decrypt.Decrypt(encrypted_file, 'files/test_file_encrypted.bin')
-    rsa_decrypt.decrypt_rsa('files/test_file_encrypted.bin')
-    decrypted_file = open('decrypted_files/test_file_encrypted_decrypted.bin', 'rb')
+    encrypted_file = open('encrypted_files/test_file_encrypted.bin', 'rb')
+    rsa_decrypt = decrypt.Decrypt(encrypted_file, 'encrypted_files/test_file_encrypted.bin')
+    rsa_decrypt.decrypt_rsa('encrypted_files/test_file_encrypted.bin')
+    decrypted_file = open('decrypted_files/test_file_decrypted.bin', 'rb')
     with open('files/test_file.txt', 'r') as f:
         message = f.read()
-    with open('decrypted_files/test_file_encrypted_decrypted.bin', 'rb') as f:
+    with open('decrypted_files/test_file_decrypted.bin', 'rb') as f:
         decrypted_message = f.read().decode('ascii')
 
     assert decrypted_message == message.split('\n')[0]

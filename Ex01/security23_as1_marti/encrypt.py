@@ -38,15 +38,16 @@ class Encrypt:
             f.write(encrypted_file)
 
     def encrypt_rsa(self, file_path):
-        rsa.RSA(self.file, self.file_path).encrypt()
-
-    global options
-    options = {
-            'ecb': encrypt_ecb,
-            'ofb': encrypt_ofb,
-            'rsa': encrypt_rsa
-            }
+        rsa.RSA(self.file, file_path).encrypt()
+    
+    def get_algo(self, chosen_algo):
+        if chosen_algo == 'ecb':
+            self.encrypt_ecb()
+        if chosen_algo == 'ofb':
+            self.encrypt_ofb()
+        if chosen_algo == 'rsa':
+            self.encrypt_rsa(self.file_path)
 
     def choose_encryption_algo(self):
         chosen_algo = input("Choose encryption algorithm (ECB, OFB or RSA):")
-        options[str(chosen_algo.lower())](self)
+        self.get_algo(chosen_algo.lower())

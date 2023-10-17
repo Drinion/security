@@ -91,18 +91,16 @@ class RSA:
         key_array = key.to_bytes(16, 'little')
         file_array = bytearray(file)
         key_file = bytearray(key_array) + file_array
-        with open('files/' + file_name + '_encrypted.bin', 'wb') as f:
+        with open('encrypted_files/' + file_name + '_encrypted.bin', 'wb') as f:
             f.write(bytes(key_file))
 
-        print("Encrypted file stored as 'files/" + file_name + "_encrypted.bin'")
+        print("Encrypted file stored as 'encrypted_files/" + file_name + "_encrypted.bin'")
 
     def extract_sym_key(self, file):
         content = file.read()
         key_bytes = content[:16]
         key = int.from_bytes(key_bytes, 'little')
         message = content[16:]
-        print("extracted key", key)
-        print("extracted message", message)
 
         return key, message
 
@@ -124,7 +122,7 @@ class RSA:
         return decrypted_file
 
     def save_decrypted_file(self, file):
-        file_name = self.file_path.split("/")[-1].split(".")[0]
+        file_name = self.file_path.split("/")[-1].split(".")[0].split('_encrypted')[0]
         text = file.decode('ascii').split('\n')[0]
 
         with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:

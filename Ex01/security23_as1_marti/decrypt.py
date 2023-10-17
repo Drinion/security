@@ -37,14 +37,15 @@ class Decrypt:
     def decrypt_rsa(self, file_path):
         rsa.RSA(self.file, file_path).decrypt()
 
-    global options
-    options = {
-            'ecb': decrypt_ecb,
-            'ofb': decrypt_ofb,
-            'rsa': decrypt_rsa
-            }
+    def get_algo(self, chosen_algo):
+        if chosen_algo == 'ecb':
+            self.decrypt_ecb(self)
+        if chosen_algo == 'ofb':
+            self.decrypt_ofb(self)
+        if chosen_algo == 'rsa':
+            self.decrypt_rsa(self.file_path)
 
     def choose_decryption_algo(self):
         chosen_algo = input("Choose decryption algorithm (ECB, OFB or RSA):")
         print(chosen_algo + " is a nice choice!")
-        options[str(chosen_algo.lower())](self)
+        self.get_algo(chosen_algo.lower())
