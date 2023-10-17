@@ -1,5 +1,5 @@
 # Hush
-This program can be used to encrypt and decrypt text files using three different cryptological algorithms, namely RSA, ECB and ONF.
+This program can be used to encrypt and decrypt text files using three different cryptological algorithms, namely RSA (actually GCM with RSA), ECB and ONF.
 ## Installation and Launch
 Move to your desired location and clone this repository using
 ```
