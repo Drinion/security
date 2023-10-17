@@ -21,5 +21,5 @@ Now simply follow the CL-Dialog.
 ## Testing
 There are currently two tests that test the basic functionality of the RSA encryption flow. You can run the tests using
 ```
-pytest test_rsa.py
+pytest
 ```
