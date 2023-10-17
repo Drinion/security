@@ -17,10 +17,8 @@ class Encrypt:
     def encrypt_ecb(self):
         file_contents = bytes(self.file.read())
         key = (300).to_bytes(16, 'little')
-
         with open('keys/ecb_key.bin', 'wb') as f:
             f.write(key)
-
         cipher = AES.new(key, AES.MODE_ECB)
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
         with open('encrypted_files/en_ecb.bin', 'wb') as f:
@@ -30,17 +28,12 @@ class Encrypt:
     def encrypt_ofb(self):
         file_contents = bytes(self.file.read())
         key = get_random_bytes(32)
-
         with open('keys/ofb_key.bin', 'wb') as f:
             f.write(key)
-
         cipher = AES.new(key, AES.MODE_OFB)
-
         with open('keys/ofb_iv.bin', 'wb') as f:
             f.write(cipher.iv)
-
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
-
         with open('encrypted_files/en_ofb.bin', 'wb') as f:
             f.write(encrypted_file)
 

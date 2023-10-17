@@ -1,7 +1,10 @@
-import random, math, json
+import random
+import math
+import json
 from struct import pack
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
+
 
 class RSA:
 
@@ -29,12 +32,12 @@ class RSA:
 
     def save_public_key(self, e, N):
         with open('keys/public_key.bin', 'w') as f:
-            dictionary = { "e": e, "N": N }
+            dictionary = {"e": e, "N": N}
             json.dump(dictionary, f)
 
     def save_private_key(self, d, N):
         with open('keys/private_key.bin', 'w') as f:
-            dictionary = { "d": d, "N": N }
+            dictionary = {"d": d, "N": N}
             json.dump(dictionary, f)
 
     def compute_d(self, x, phi_N):
@@ -65,7 +68,7 @@ class RSA:
 
     def encrypt_file_with_aes_gcm(self):
         header = b"header"
-        key = (332).to_bytes(16, 'little')
+        key = (3).to_bytes(16, 'little')
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
         encrypted_file, tag = cipher.encrypt_and_digest(self.file.read(), output=None)
@@ -98,6 +101,8 @@ class RSA:
         key_bytes = content[:16]
         key = int.from_bytes(key_bytes, 'little')
         message = content[16:]
+        print("extracted key", key)
+        print("extracted message", message)
 
         return key, message
 
@@ -128,7 +133,7 @@ class RSA:
     def encrypt(self):
         e, N = self.generate_keys()
         encrypted_file, sym_key = self.encrypt_file_with_aes_gcm()
-        encrypted_sym_key = self.encrypt_sym_key(sym_key,e,N)
+        encrypted_sym_key = self.encrypt_sym_key(sym_key, e, N)
         self.append(encrypted_file, encrypted_sym_key)
 
     def decrypt(self):
