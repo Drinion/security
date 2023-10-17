@@ -17,7 +17,6 @@ class Encrypt:
     def encrypt_ecb(self):
         file_contents = bytes(self.file.read())
         key = (300).to_bytes(16, 'little')
-        #  key = get_random_bytes(32)
 
         with open('keys/ecb_key.bin', 'wb') as f:
             f.write(key)
