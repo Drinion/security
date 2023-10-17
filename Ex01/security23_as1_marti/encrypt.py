@@ -36,6 +36,7 @@ class Encrypt:
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
         with open('encrypted_files/en_ofb.bin', 'wb') as f:
             f.write(encrypted_file)
+        print("Encrypted file stored at 'encrypted_files/en_ofb.bin'")
 
     def encrypt_rsa(self, file_path):
         rsa.RSA(self.file, file_path).encrypt()

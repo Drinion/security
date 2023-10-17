@@ -22,6 +22,7 @@ class Decrypt:
         decrypted_text = unpad(cipher.decrypt(file_contents), 32)
         with open('decrypted_files/de_ecb.bin', 'wb') as f:
             f.write(decrypted_text)
+        print("Decrypted file stored at 'decrypted_files/de_ecb.bin'")
 
     def decrypt_ofb(self):
         file_contents = self.file.read()
@@ -33,19 +34,19 @@ class Decrypt:
         decrypted_text = unpad(cipher.decrypt(file_contents), 32)
         with open('decrypted_files/de_ofb.bin', 'wb') as f:
             f.write(decrypted_text)
+        print("Decrypted file stored at 'decrypted_files/de_ofb.bin'")
 
     def decrypt_rsa(self, file_path):
         rsa.RSA(self.file, file_path).decrypt()
 
     def get_algo(self, chosen_algo):
         if chosen_algo == 'ecb':
-            self.decrypt_ecb(self)
+            self.decrypt_ecb()
         if chosen_algo == 'ofb':
-            self.decrypt_ofb(self)
+            self.decrypt_ofb()
         if chosen_algo == 'rsa':
             self.decrypt_rsa(self.file_path)
 
     def choose_decryption_algo(self):
         chosen_algo = input("Choose decryption algorithm (ECB, OFB or RSA):")
-        print(chosen_algo + " is a nice choice!")
         self.get_algo(chosen_algo.lower())

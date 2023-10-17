@@ -18,7 +18,7 @@ class Main:
         decrypt.Decrypt(file, file_path).start()
 
     def choose_encryption_or_decryption(self, file, file_path):
-        choice = input("Would you like to encrypt or decrypt a file?")
+        choice = input("Would you like to encrypt or decrypt a file (enter 'encrypt' or 'decrypt')?")
         if choice.lower() == 'encrypt':
             self.encrypt(file, file_path)
         if choice.lower() == 'decrypt':
