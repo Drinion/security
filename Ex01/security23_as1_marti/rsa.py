@@ -65,7 +65,7 @@ class RSA:
 
     def encrypt_file_with_aes_gcm(self):
         header = b"header"
-        key = (3).to_bytes(16, 'little')
+        key = (332).to_bytes(16, 'little')
         cipher = AES.new(key, AES.MODE_GCM)
         nonce = cipher.nonce
         encrypted_file, tag = cipher.encrypt_and_digest(self.file.read(), output=None)
@@ -91,7 +91,7 @@ class RSA:
         with open('files/' + file_name + '_encrypted.bin', 'wb') as f:
             f.write(bytes(key_file))
 
-        print("Encrypted file stored as 'files/"+ file_name + "_encrypted.bin'")
+        print("Encrypted file stored as 'files/" + file_name + "_encrypted.bin'")
 
     def extract_sym_key(self, file):
         content = file.read()
@@ -120,7 +120,7 @@ class RSA:
 
     def save_decrypted_file(self, file):
         file_name = self.file_path.split("/")[-1].split(".")[0]
-        text = str(file).split('\\n')[0].split("b\'")[1]
+        text = file.decode('ascii').split('\n')[0]
 
         with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:
             f.write(text)
