@@ -16,7 +16,8 @@ class Encrypt:
 
     def encrypt_ecb(self):
         file_contents = bytes(self.file.read())
-        key = get_random_bytes(32)
+        key = (300).to_bytes(16, 'little')
+        #  key = get_random_bytes(32)
 
         with open('keys/ecb_key.bin', 'wb') as f:
             f.write(key)
@@ -45,11 +46,8 @@ class Encrypt:
             f.write(encrypted_file)
 
     def encrypt_rsa(self, file_path):
-        rsa.RSA(self.file, file_path).encrypt()
+        rsa.RSA(self.file, self.file_path).encrypt()
 
-    """
-    TODO: options shouldn't be global. Change it.
-    """
     global options
     options = {
             'ecb': encrypt_ecb,
