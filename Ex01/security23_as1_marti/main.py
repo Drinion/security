@@ -7,7 +7,9 @@ class Main:
         self.start()
 
     def start(self):
+        global file_path
         file_path = input("Hey! Please give me a file (enter filepath): ")
+        print("file path", file_path)
         global file
         file = open(file_path, 'rb')
         self.choose_encryption_or_decryption()

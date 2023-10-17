@@ -23,9 +23,9 @@ class Encrypt:
 
         cipher = AES.new(key, AES.MODE_ECB)
         encrypted_file = cipher.encrypt(pad(file_contents, 32))
-
         with open('encrypted_files/en_ecb.bin', 'wb') as f:
             f.write(encrypted_file)
+        print("Encrypted file stored at 'encrypted_files/en_ecb.bin'")
 
     def encrypt_ofb(self):
         file_contents = bytes(self.file.read())
@@ -59,5 +59,4 @@ class Encrypt:
 
     def choose_encryption_algo(self):
         chosen_algo = input("Choose encryption algorithm (ECB, OFB or RSA):")
-        print(chosen_algo + " is a nice choice!")
         options[str(chosen_algo.lower())](self)
