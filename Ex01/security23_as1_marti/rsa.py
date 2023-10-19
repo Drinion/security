@@ -12,23 +12,11 @@ class RSA:
         self.file = file
         self.file_path = file_path
 
-    def generate_e(self, n):
+    def compute_e(self, n):
         while (True):
             e = random.randrange(2, n)
             if (math.gcd(e, n) == 1):
                 return e
-
-    def generate_gcd(self, e, n):
-        x, old_x = 0, 1
-        y, old_y = 1, 0
-
-        while (n != 0):
-            quotient = e // n
-            e, n = n, e - quotient * n
-            old_x, x = x, old_x - quotient * x
-            old_y, y = y, old_y - quotient * y
-
-        return e, old_x, old_y
 
     def save_public_key(self, e, N):
         with open('keys/public_key.bin', 'w') as f:
@@ -40,11 +28,13 @@ class RSA:
             dictionary = {"d": d, "N": N}
             json.dump(dictionary, f)
 
-    def compute_d(self, x, phi_N):
-        if (x < 0):
-            d = x + phi_N
-        else:
-            d = x
+    def compute_d(self, e, phi_N):
+        j = 0
+        while True:
+            if (j * e) % phi_N == 1:
+                d = j
+                break
+            j += 1
         return d
 
     def generate_keys(self):
@@ -52,9 +42,8 @@ class RSA:
         q = 91
         N = p*q
         phi_N = (p-1)*(q-1)
-        e = self.generate_e(phi_N)
-        gcd, x, y = self.generate_gcd(e, phi_N)
-        d = self.compute_d(x, phi_N)
+        e = self.compute_e(phi_N)
+        d = self.compute_d(e, phi_N)
         self.save_public_key(e, N)
         self.save_private_key(d, N)
 
@@ -127,6 +116,7 @@ class RSA:
 
         with open('decrypted_files/' + file_name + '_decrypted.bin', 'w') as f:
             f.write(text)
+        print("Decrypted file stored as 'decrypted_files/" + file_name + "_decrypted.bin'")
 
     def encrypt(self):
         e, N = self.generate_keys()
